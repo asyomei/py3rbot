@@ -13,7 +13,6 @@ class PythonBot:
             bot_token=bot_token,
             parse_mode=ParseMode.DISABLED,
             in_memory=True,
-            ipv6=True,
         )
         for handler in handlers:
             app.add_handler(*handler)
