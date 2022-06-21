@@ -13,7 +13,7 @@ from pyrogram.types.inline_mode import (
 from pyrogram.types.input_message_content import InputTextMessageContent
 
 from .. import strings
-from ..constants import MAX_INLINE_QUERY_LENGTH, TIMEOUT
+from ..constants import TIMEOUT
 from ..python_runner import code_args_split, py_run
 from .handler_decorator import on_chosen_inline_result, on_inline_query
 from .utils import get_formatted, html_italic
@@ -29,13 +29,7 @@ async def inline_query_handler(_: Client, query: InlineQuery) -> None:
     code = code_args_split(query.query)[0]
 
     if not code:
-        text = strings.no_code()
-        await query.answer([], switch_pm_text=text, switch_pm_parameter="0")
-        return
-
-    if len(code) > MAX_INLINE_QUERY_LENGTH:
-        text = strings.too_long_query()
-        await query.answer([], switch_pm_text=text, switch_pm_parameter="0")
+        await query.answer([])
         return
 
     btn = InlineKeyboardButton(strings.running(), "0")

@@ -35,7 +35,5 @@ too-long-output: too long output
 was-terminated: execution time exceeded
 
 output: Output
-no-code: No code
 run-code: Run code
 running: Running...
-too-long-query: Too long query

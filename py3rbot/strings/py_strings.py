@@ -45,14 +45,8 @@ def was_terminated() -> str:
 def output() -> str:
     return _get(output)
 
-def no_code() -> str:
-    return _get(no_code)
-
 def run_code() -> str:
     return _get(run_code)
 
 def running() -> str:
     return _get(running)
-
-def too_long_query() -> str:
-    return _get(too_long_query)
