@@ -3,19 +3,30 @@ from asyncio.subprocess import PIPE, create_subprocess_exec
 from asyncio.tasks import wait_for
 from os import path
 from pwd import getpwnam
+from subprocess import CalledProcessError, check_call
 from traceback import format_exc
 from typing import Optional
 
 
-pw = getpwnam("py3rbot")
-gid, uid = pw.pw_gid, pw.pw_uid
-CHROOT = path.dirname(path.realpath(__file__)) + "/chroot"
-CHROOT = (
-    f"__import__('os').chroot('{CHROOT}')\n"
-    f"__import__('os').setgid({gid})\n"
-    f"__import__('os').setuid({uid})\n"
-     "__import__('sys').path=['/python']\n"
-)
+CHROOT = ""
+try:
+    pw = getpwnam("py3rbot")
+    check_call(["chroot", "/", "true"])
+    CHROOT = path.dirname(path.realpath(__file__)) + "/chroot"
+    CHROOT = (
+        f"__import__('os').chroot('{CHROOT}')\n"
+        f"__import__('os').setgid({pw.pw_gid})\n"
+        f"__import__('os').setuid({pw.pw_uid})\n"
+         "__import__('sys').path=['/python']\n"
+    )
+except KeyError:
+    print("Error! not found py3rbot user, not safe")
+    if input("Continue? y/n: ").lower() != "y":
+        raise InterruptedError
+except CalledProcessError:
+    print("Error! chroot command was return non-zero code, not safe")
+    if input("Continue? y/n: ").lower() != "y":
+        raise InterruptedError
 
 
 class PythonAsyncRunner:
