@@ -1,14 +1,9 @@
-from typing import Optional
-
-from .python_runner import PythonAsyncRunner
+from .python_runner import PythonRunner
 
 
-_py = PythonAsyncRunner()
-
-
-async def py_run(code: str, eval_mode: bool=False,
-                 timeout: Optional[float]=None) -> Optional[str]:
-    return await _py.run(code, eval_mode, timeout)
+def from_eval(expr: str) -> str:
+    modules = "import math, random"
+    return f"{modules}\nexpr = eval({expr!r})\nprint(expr)"
 
 
 def code_args_split(text: str) -> tuple[str, str]:

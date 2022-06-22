@@ -14,7 +14,7 @@ from pyrogram.types.input_message_content import InputTextMessageContent
 
 from .. import strings
 from ..constants import TIMEOUT
-from ..python_runner import code_args_split, py_run
+from ..python_runner import PythonRunner, code_args_split, from_eval
 from .handler_decorator import on_chosen_inline_result, on_inline_query
 from .utils import get_formatted, html_italic
 
@@ -51,13 +51,14 @@ async def chosen_inline_result_handler(app: Client,
                                        chosen: ChosenInlineResult) -> None:
     code, args = code_args_split(chosen.query)
 
-    eval_mode = "e" in args
-    result = get_formatted(await py_run(code, eval_mode, TIMEOUT))
+    if "e" in args:
+        code = from_eval(code)
+
+    result = await PythonRunner.run(code, TIMEOUT)
+    result = get_formatted(result)
 
     text = ""
     if "r" not in args:
-        if eval_mode:
-            code = f"import math\nprint({code})"
         text += html.escape(code)
         text += f"\n\n--- {html_italic(strings.output)} ---\n\n"
 

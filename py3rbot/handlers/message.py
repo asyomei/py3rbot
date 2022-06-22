@@ -8,7 +8,7 @@ from pyrogram.types.messages_and_media import Message
 
 from .. import strings
 from ..constants import TIMEOUT
-from ..python_runner import code_args_split, py_run
+from ..python_runner import PythonRunner, code_args_split, from_eval
 from .handler_decorator import on_message
 from .utils import get_formatted, html_italic
 
@@ -81,6 +81,9 @@ async def _send_result(app: Client, chat_id: int, text: str) -> None:
     text = html_italic(strings.running)
     m = await app.send_message(chat_id, text, ParseMode.HTML)
 
-    eval_mode = "e" in args
-    result = get_formatted(await py_run(code, eval_mode, TIMEOUT))
+    if "e" in args:
+        code = from_eval(code)
+
+    result = await PythonRunner.run(code, TIMEOUT)
+    result = get_formatted(result)
     await m.edit(result, ParseMode.HTML)

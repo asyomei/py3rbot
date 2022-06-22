@@ -29,28 +29,25 @@ except CalledProcessError:
         raise InterruptedError
 
 
-class PythonAsyncRunner:
-    async def run(self, code: str, eval_mode: bool=False,
-                  timeout: Optional[float]=None) -> Optional[str]:
-        if err := self._check(code, eval_mode):
+class PythonRunner:
+    @staticmethod
+    async def run(code: str, timeout: Optional[float]=None) -> Optional[str]:
+        if err := PythonRunner._check(code):
             return err
-
-        if eval_mode:
-            code = f"import math;print({code})"
         args = ["python", "-Ic", CHROOT + code]
-        return await self._subp_run(args, timeout)
+        return await PythonRunner._subp_run(*args, timeout=timeout)
 
 
-    def _check(self, code: str, eval_mode: bool) -> Optional[str]:
-        mode = "eval" if eval_mode else "exec"
+    @staticmethod
+    def _check(code: str) -> Optional[str]:
         try:
-            compile(code, "<check>", mode)
+            compile(code, "<check>", "exec")
         except SyntaxError:
             return "Traceback (most recent call last):\n" + format_exc(0)
 
 
-    async def _subp_run(self, args: list[str],
-                        timeout: Optional[float]) -> Optional[str]:
+    @staticmethod
+    async def _subp_run(*args: str, timeout: Optional[float]) -> Optional[str]:
         p = await create_subprocess_exec(*args, stdout=PIPE, stderr=PIPE)
 
         try:

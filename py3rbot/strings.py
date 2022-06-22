@@ -29,7 +29,7 @@ Arguments:
 
 eval_help = """\
 Eval mode as print(eval(...))
-Default imported math module
+Default imported math, random modules
 Example:
   /e math.sqrt(4 + 5) # output: 3.0
 """
