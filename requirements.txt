@@ -1,0 +1,3 @@
+Pyrogram<3
+TgCrypto<2
+python-decouple<4
