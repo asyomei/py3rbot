@@ -33,6 +33,10 @@ Usage
    cp -r /usr/lib/python3 chroot/python
    chmod 0644 -R chroot
    ```
+1. Install requirements
+   ```bash
+   pip install -r requirements.txt
+   ```
 1. Run main.py
    ```bash
    cd ../..
