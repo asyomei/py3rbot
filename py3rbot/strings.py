@@ -46,5 +46,7 @@ too_long_output = _("too long output")
 was_terminated = _("execution time exceeded")
 
 output = _("Output")
+no_code = _("No code")
 run_code = _("Run code")
 running = _("Running...")
+too_long_query = _("Too long query")

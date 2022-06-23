@@ -3,7 +3,8 @@ from .python_runner import PythonRunner
 
 def from_eval(expr: str) -> str:
     modules = "import math, random"
-    return f"{modules}\nexpr = eval({expr!r})\nprint(expr)"
+    code = f"compile({expr!r},'<eval>','eval')"
+    return f"{modules};print(eval({code}))"
 
 
 def code_args_split(text: str) -> tuple[str, str]:

@@ -1,4 +1,4 @@
-import html
+from html import escape as html_escape
 from typing import Optional
 
 from .. import strings
@@ -17,8 +17,8 @@ def get_formatted(result: Optional[str]) -> str:
     if len(result) > MAX_MESSAGE_TEXT_LENGTH:
         return html_italic(strings.too_long_output())
 
-    return html.escape(result)
+    return html_escape(result)
 
 
 def html_italic(text: str) -> str:
-    return f"<i>{html.escape(text)}</i>"
+    return f"<i>{html_escape(text)}</i>"
