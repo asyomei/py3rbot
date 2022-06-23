@@ -35,26 +35,26 @@ async def via_me(_: Filter, app: Client, message: Message) -> bool:
 
 @on_message(command("start"))
 async def start_cmd(_: Client, message: Message) -> None:
-    text = strings.start
+    text = strings.start()
     await message.reply(text, quote=False)
 
 
 @on_message(command("help"))
 async def help_cmd(_: Client, message: Message) -> None:
-    text = strings.help.format(python_version=python_version())
+    text = strings.help(python_version=python_version())
     await message.reply(text, quote=False)
 
 
 @on_message(command("inline"))
 async def inline_cmd(app: Client, message: Message) -> None:
     bot = await app.get_me()
-    text = strings.inline_help.format(botname=bot.username)
+    text = strings.inline_help(botname=bot.username)
     await message.reply(text, quote=False)
 
 
 @on_message(command("eval"))
 async def eval_cmd(_: Client, message: Message) -> None:
-    text = strings.eval_help
+    text = strings.eval_help()
     await message.reply(text, quote=False)
 
 
@@ -63,7 +63,7 @@ async def py_cmd(app: Client, message: Message) -> None:
     _, *args = message.text.split(maxsplit=1)
 
     if not args:
-        text = strings.py_cmd_help
+        text = strings.py_cmd_help()
         await message.reply(text, quote=False)
         return
 
@@ -78,7 +78,7 @@ async def on_reply(app: Client, message: Message) -> None:
 async def _send_result(app: Client, chat_id: int, text: str) -> None:
     code, args = code_args_split(text)
 
-    text = html_italic(strings.running)
+    text = html_italic(strings.running())
     m = await app.send_message(chat_id, text, ParseMode.HTML)
 
     if "e" in args:

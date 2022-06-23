@@ -32,11 +32,11 @@ async def inline_query_handler(_: Client, query: InlineQuery) -> None:
         await query.answer([])
         return
 
-    btn = InlineKeyboardButton(strings.running, "0")
+    btn = InlineKeyboardButton(strings.running(), "0")
     markup = InlineKeyboardMarkup([[btn]])
 
     result_article = InlineQueryResultArticle(
-        title=strings.run_code,
+        title=strings.run_code(),
         description=code,
         reply_markup=markup,
         input_message_content=InputTextMessageContent(query.query),
@@ -60,11 +60,11 @@ async def chosen_inline_result_handler(app: Client,
     text = ""
     if "r" not in args:
         text += html.escape(code)
-        text += f"\n\n--- {html_italic(strings.output)} ---\n\n"
+        text += f"\n\n--- {html_italic(strings.output())} ---\n\n"
 
     inline_id = chosen.inline_message_id
     try:
         await app.edit_inline_text(inline_id, text + result, ParseMode.HTML)
     except MessageTooLong:
-        result = html_italic(strings.too_long_output)
+        result = html_italic(strings.too_long_output())
         await app.edit_inline_text(inline_id, text + result, ParseMode.HTML)
