@@ -8,7 +8,7 @@ from traceback import format_exc
 from typing import Optional
 
 
-CHROOT = ""
+CHROOT = "{}"
 try:
     pw = getpwnam("py3rbot")
     check_call(["chroot", "/", "true"])
@@ -18,6 +18,7 @@ try:
         f"__import__('os').setgid({pw.pw_gid})\n"
         f"__import__('os').setuid({pw.pw_uid})\n"
          "__import__('sys').path=['/python']\n"
+         "exec(compile({!r},'<exec>','exec'))"
     )
 except KeyError:
     print("Error! not found py3rbot user, not safe")
@@ -34,7 +35,7 @@ class PythonRunner:
     async def run(code: str, timeout: Optional[float]=None) -> Optional[str]:
         if err := PythonRunner._check(code):
             return err
-        args = ["python", "-Ic", CHROOT + code]
+        args = ["python", "-Ic", CHROOT.format(code)]
         return await PythonRunner._subp_run(*args, timeout=timeout)
 
 
