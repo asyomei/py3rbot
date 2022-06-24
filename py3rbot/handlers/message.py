@@ -41,14 +41,14 @@ async def start_cmd(_: Client, message: Message) -> None:
 
 @on_message(command("help"))
 async def help_cmd(_: Client, message: Message) -> None:
-    text = strings.help(python_version=python_version())
+    text = strings.help(python_version())
     await message.reply(text, quote=False)
 
 
 @on_message(command("inline"))
 async def inline_cmd(app: Client, message: Message) -> None:
     bot = await app.get_me()
-    text = strings.inline_help(botname=bot.username)
+    text = strings.inline_help(bot.username)
     await message.reply(text, quote=False)
 
 
