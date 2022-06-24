@@ -8,9 +8,9 @@ from pyrogram.types.messages_and_media import Message
 
 from .. import strings
 from ..constants import TIMEOUT
-from ..python_runner import PythonRunner, code_args_split, from_eval
+from ..python_runner import PythonRunner, from_eval
 from .handler_decorator import on_message
-from .utils import get_formatted, html_italic
+from .utils import code_args_split, get_formatted, html_italic
 
 
 handlers = list[tuple[Handler, int]]()

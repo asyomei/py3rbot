@@ -13,9 +13,9 @@ from pyrogram.types.input_message_content import InputTextMessageContent
 
 from .. import strings
 from ..constants import MAX_INLINE_QUERY_LENGTH, TIMEOUT
-from ..python_runner import PythonRunner, code_args_split, from_eval
+from ..python_runner import PythonRunner, from_eval
 from .handler_decorator import on_chosen_inline_result, on_inline_query
-from .utils import get_formatted, html_escape, html_italic
+from .utils import code_args_split, get_formatted, html_escape, html_italic
 
 
 handlers = list[tuple[Handler, int]]()
