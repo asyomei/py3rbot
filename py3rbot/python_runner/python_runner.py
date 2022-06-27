@@ -4,6 +4,7 @@ from asyncio.tasks import wait_for
 from os import path
 from pwd import getpwnam
 from subprocess import CalledProcessError, check_call
+from sys import executable
 from traceback import format_exc
 from typing import Optional
 
@@ -35,7 +36,7 @@ class PythonRunner:
     async def run(code: str, timeout: Optional[float]=None) -> Optional[str]:
         if err := PythonRunner._check(code):
             return err
-        args = ["python", "-Ic", CHROOT.format(code)]
+        args = [executable, "-Ic", CHROOT.format(code)]
         return await PythonRunner._subp_run(*args, timeout=timeout)
 
 
