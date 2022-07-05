@@ -24,14 +24,13 @@ def start() -> str:
 def help(python_version: str) -> str:
     return _get(help, python_version=python_version)
 
+
 def py_cmd_help() -> str:
     return _get(py_cmd_help)
 
 def inline_help(botname: str) -> str:
     return _get(inline_help, botname=botname)
 
-def eval_help() -> str:
-    return _get(eval_help)
 
 def empty() -> str:
     return _get(empty)
@@ -41,6 +40,7 @@ def too_long_output() -> str:
 
 def was_terminated() -> str:
     return _get(was_terminated)
+
 
 def output() -> str:
     return _get(output)

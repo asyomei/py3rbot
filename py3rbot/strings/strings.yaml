@@ -2,7 +2,6 @@ start: "Hi! I'm Python Bot. Usage: /help"
 
 help: |
   Usage:
-    - Reply to me python code
     - /py command (help: /py)
     - via me (help: /inline)
   Python version: {python_version}
@@ -13,7 +12,7 @@ py-cmd-help: |
   Example:
     /py print("Hi!")
   Arguments:
-    e - Eval mode (help: /eval)
+    p - Remove printing last expression
 
 inline-help: |
   Usage:
@@ -21,14 +20,8 @@ inline-help: |
   Example:
     @{botname} print(6 * 7)
   Arguments:
-    e - Eval mode (help: /eval)
+    p - Remove printing last expression
     r - Remove code from result message
-
-eval-help: |
-  Eval mode as print(eval(...))
-  Default imported math, random modules
-  Example:
-    /e math.sqrt(4 + 5) # output: 3.0
 
 empty: empty
 too-long-output: too long output

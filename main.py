@@ -1,3 +1,6 @@
+import os
+import sys
+
 from decouple import config
 
 from py3rbot import PythonBot
@@ -17,4 +20,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # fix Pyrogram's smart plugins path
+    old_cwd = os.getcwd()
+    new_cwd = os.path.dirname(os.path.realpath(__file__))
+    try:
+        os.chdir(new_cwd)
+        main()
+    finally:
+        os.chdir(old_cwd)

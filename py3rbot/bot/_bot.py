@@ -10,14 +10,12 @@ class PythonBot:
             api_id, api_hash,
             bot_token=bot_token,
             parse_mode=ParseMode.DISABLED,
+            plugins=dict(root="py3rbot.handlers"),
             in_memory=True,
         )
-        self.__registered = False
 
 
     def run(self) -> None:
-        self.__register_handlers()
-
         app = self._app
 
         async def _run() -> None:
@@ -27,16 +25,3 @@ class PythonBot:
             print("Goodbye!")
 
         app.run(_run())
-
-
-    def __register_handlers(self) -> None:
-        from ..handlers import handlers
-
-        if self.__registered:
-            return
-
-        app = self._app
-        for handler in handlers:
-            app.add_handler(*handler)
-
-        self.__registered = True

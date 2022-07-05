@@ -1,1 +1,1 @@
-from .py_strings import *
+from ._strings import *

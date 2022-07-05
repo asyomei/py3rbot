@@ -4,7 +4,7 @@ Python Runner
 Source code of [@py3rbot](https://t.me/py3rbot)
 
 
-**Requires** Linux with chroot support
+**Requires** Linux with chroot support (otherwise very unsafe)
 
 Usage
 -----
@@ -27,19 +27,12 @@ Usage
    ```bash
    useradd -M py3rbot
    ```
-1. Copy python's lib dir to py3rbot/python_runner/chroot and chmod
-   ```bash
-   cd py3rbot/python_runner/
-   cp -r /usr/lib/python3 chroot/python
-   chmod 0644 -R chroot
-   ```
 1. Install requirements
    ```bash
    pip install -r requirements.txt
    ```
 1. Run main.py
    ```bash
-   cd ../..
    python main.py
    ```
 
@@ -49,6 +42,5 @@ Commands
 * /help
 * /py - execute code
 * /inline - inline mode help
-* /eval - eval mode help
 
 [api-key-obtain]: https://docs.pyrogram.org/start/setup#api-key
