@@ -1,12 +1,12 @@
-start: "Hi! I'm Python Bot. Usage: /help"
+start-message: "Hi! I'm Python Bot. Usage: /help"
 
-help: |
+help-message: |
   Usage:
     - /py command (help: /py)
     - via me (help: /inline)
   Python version: {python_version}
 
-py-cmd-help: |
+py-message: |
   Usage:
     /py [/<args>] <code>
   Example:
@@ -14,7 +14,7 @@ py-cmd-help: |
   Arguments:
     p - Remove printing last expression
 
-inline-help: |
+inline-message: |
   Usage:
     @{botname} [/<args>] <code>
   Example:
@@ -23,7 +23,7 @@ inline-help: |
     p - Remove printing last expression
     r - Remove code from result message
 
-empty: empty
+empty-output: empty output
 too-long-output: too long output
 was-terminated: execution time exceeded
 

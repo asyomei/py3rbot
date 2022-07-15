@@ -1,4 +1,4 @@
-Pyrogram<3
-TgCrypto<2
-python-decouple<4
+Pyrogram==2.0.32
+TgCrypto
+python-dotenv==0.20.0
 PyYAML==6.0

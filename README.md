@@ -14,15 +14,7 @@ Usage
    cd py3rbot
    ```
 1. [Obtain API_KEY][api-key-obtain]
-1. Add API_ID and API_HASH to .env
-   ```bash
-   echo 'API_ID=1234567890' >> .env
-   echo 'API_HASH=abcdef123456' >> .env
-   ```
-1. Add BOT_TOKEN to .env
-   ```bash
-   echo 'BOT_TOKEN=1234567890:abcdef123456' >> .env
-   ```
+1. Copy .env.sample to .env and enter values
 1. Create py3rbot user
    ```bash
    useradd -M py3rbot

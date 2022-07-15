@@ -12,14 +12,14 @@ from pyrogram.types import (
 
 from .. import strings
 from ..constants import MAX_INLINE_QUERY_LENGTH, TIMEOUT
-from ..utils import code_args_split, html_escape, html_italic, py_run
+from ..pyrun import run_code
+from ..utils import code_args_split, format_pyrun_result, html_escape, html_italic
 
 
-@Client.on_inline_query() # type: ignore
+@Client.on_inline_query() # pyright: ignore
 async def inline_no_code(_, query: InlineQuery) -> None:
     if code_args_split(query.query)[0]:
         query.continue_propagation()
-
     result = InlineQueryResultArticle(
         id="no-code",
         title=strings.no_code(),
@@ -30,12 +30,10 @@ async def inline_no_code(_, query: InlineQuery) -> None:
     )
     await query.answer([result])
 
-
-@Client.on_inline_query() # type: ignore
+@Client.on_inline_query() # pyright: ignore
 async def inline_too_long_query(_, query: InlineQuery) -> None:
     if len(query.query) < MAX_INLINE_QUERY_LENGTH:
         query.continue_propagation()
-
     result = InlineQueryResultArticle(
         id="too-long",
         title=strings.too_long_query(),
@@ -44,17 +42,14 @@ async def inline_too_long_query(_, query: InlineQuery) -> None:
             parse_mode=ParseMode.HTML
         )
     )
-    await query.answer([result], cache_time=0)
+    await query.answer([result])
 
-
-@Client.on_inline_query() # type: ignore
-async def inline_query_default_handler(_, query: InlineQuery) -> None:
-    code = code_args_split(query.query)[0]
-
+@Client.on_inline_query() # pyright: ignore
+async def inline_default(_, query: InlineQuery) -> None:
     result = InlineQueryResultArticle(
         id=query.id,
         title=strings.run_code(),
-        description=code,
+        description=code_args_split(query.query)[0],
         input_message_content=InputTextMessageContent(query.query),
         reply_markup=InlineKeyboardMarkup([[
             InlineKeyboardButton(strings.running(), callback_data="0")
@@ -63,26 +58,30 @@ async def inline_query_default_handler(_, query: InlineQuery) -> None:
     await query.answer([result], cache_time=0)
 
 
-@Client.on_chosen_inline_result() # type: ignore
-async def chosen_no_inline_message(_, chosen: ChosenInlineResult) -> None:
+@Client.on_chosen_inline_result() # pyright: ignore
+async def chosen_no_inline_id(_, chosen: ChosenInlineResult) -> None:
     if chosen.inline_message_id:
         chosen.continue_propagation()
 
-
-@Client.on_chosen_inline_result() # type: ignore
-async def on_chosen_inline_result(app: Client, chosen: ChosenInlineResult) -> None:
+@Client.on_chosen_inline_result() # pyright: ignore
+async def chosen_default(app: Client, chosen: ChosenInlineResult) -> None:
+    inline_id = chosen.inline_message_id
     code, args = code_args_split(chosen.query)
 
-    result = await py_run(code, TIMEOUT, "p" not in args)
+    filename = "<%s>" % (await app.get_me()).username
+    result = await run_code(code, filename, "p" not in args, TIMEOUT)
+    result = format_pyrun_result(result)
 
-    output = ""
+    text = ""
     if "r" not in args:
-        output = html_escape(code)
-        output += f"\n\n--- {html_italic(strings.output())} ---\n\n"
-    text = output + result
+        output = html_italic(strings.output())
+        text = html_escape(code)
+        text += f"\n\n --- {output} --- \n\n"
 
     try:
-        await app.edit_inline_text(chosen.inline_message_id, text, ParseMode.HTML)
+        message_text = text + result
+        await app.edit_inline_text(inline_id, message_text, ParseMode.HTML)
     except MessageTooLong:
-        text = output + html_italic(strings.too_long_output())
-        await app.edit_inline_text(chosen.inline_message_id, text, ParseMode.HTML)
+        result = html_italic(strings.too_long_output())
+        message_text = text + result
+        await app.edit_inline_text(inline_id, message_text, ParseMode.HTML)
