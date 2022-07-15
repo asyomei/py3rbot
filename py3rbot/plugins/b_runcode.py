@@ -10,7 +10,7 @@ from ..pyrun import run_code
 from ..utils import code_args_split, format_pyrun_result, html_italic
 
 
-@Client.on_message(command("py")) # pyright: ignore
+@Client.on_message(command("py") & ~via_me) # pyright: ignore
 async def py_cmd(app: Client, message: Message) -> None:
     code, args = code_args_split(message.text.split(maxsplit=1)[1])
     await _send_result(app, message.chat.id, code, args)
